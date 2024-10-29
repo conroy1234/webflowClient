@@ -17,13 +17,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.webflowClient.controller.data.TestData;
 import org.webflowClient.dto.Product;
+import org.webflowClient.dto.ProductDto;
+import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -59,6 +67,22 @@ public class ApiControllerTest {
                 .andExpect(jsonPath("quantity").value("5"))
                 .andExpect(jsonPath("totalPrice").value("177.0")
                 ).andExpect(status().isOk())
+                .andReturn();
+    }
+
+
+    @Test
+    public void findAllTest() throws Exception {
+        TestData testData = new TestData();
+        List<ProductDto> products = testData.getProducts();
+        Mono<List<ProductDto>> mono = Mono.just(products);
+        ResponseEntity<Mono<List<ProductDto>>>  responseEntity = ResponseEntity.ok(mono);
+
+        when(apiController.findAll()).thenReturn(responseEntity);
+        mockMvc.perform(get("/products" )
+                )
+                .andDo(print()).
+                andExpect(status().isOk())
                 .andReturn();
     }
 

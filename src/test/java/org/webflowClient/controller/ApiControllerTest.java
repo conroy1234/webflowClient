@@ -1,37 +1,27 @@
 package org.webflowClient.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.webflowClient.controller.data.TestData;
 import org.webflowClient.dto.Product;
 import org.webflowClient.dto.ProductDto;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -45,7 +35,7 @@ public class ApiControllerTest {
     @MockBean
     ApiController apiController;
 
-     @Test
+    @Test
     public void findByIdTest() throws Exception {
 
         Product product = new Product();
@@ -76,10 +66,10 @@ public class ApiControllerTest {
         TestData testData = new TestData();
         List<ProductDto> products = testData.getProducts();
         Mono<List<ProductDto>> mono = Mono.just(products);
-        ResponseEntity<Mono<List<ProductDto>>>  responseEntity = ResponseEntity.ok(mono);
+        ResponseEntity<Mono<List<ProductDto>>> responseEntity = ResponseEntity.ok(mono);
 
         when(apiController.findAll()).thenReturn(responseEntity);
-        mockMvc.perform(get("/products" )
+        mockMvc.perform(get("/products")
                 )
                 .andDo(print()).
                 andExpect(status().isOk())

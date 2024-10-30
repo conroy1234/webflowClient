@@ -23,6 +23,7 @@
         <spring.cloud.aws.messaging.version>2.2.6.RELEASE</spring.cloud.aws.messaging.version>
         <spring.cloud.aws.dependencies.version>3.0.2</spring.cloud.aws.dependencies.version>
         <spring.integration.aws.version>3.0.1</spring.integration.aws.version>
+        <spring-cloud.version>2022.0.3</spring-cloud.version>
 
     </properties>
     <dependencies>
@@ -51,11 +52,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.10.1</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -106,24 +102,28 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.18.1</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-aws-messaging</artifactId>
-            <version>2.2.6.RELEASE</version>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
-        </dependency>
     </dependencies>
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>
